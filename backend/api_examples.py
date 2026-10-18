@@ -191,7 +191,7 @@ def main():
     except requests.exceptions.ConnectionError:
         print("\n✗ Error: Could not connect to the server.")
         print("Please make sure the Django server is running:")
-        print("  python manage.py runserver\n")
+        print("  cd backend && python manage.py runserver\n")
 
 if __name__ == '__main__':
     main()

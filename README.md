@@ -192,19 +192,19 @@ conda activate finance_tracker
 ### Step 3: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ### Step 4: Configure Environment Variables
 
-Copy `.env.example` to `.env` in the project root:
+Copy `backend/.env.example` to `backend/.env`:
 
 ```bash
 # Windows PowerShell
-Copy-Item .env.example .env
+Copy-Item backend/.env.example backend/.env
 
 # Linux / Mac
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
 Configure your MongoDB and API keys in `.env`:
@@ -242,7 +242,7 @@ OLLAMA_ENABLED="False"
 ### Step 5: Run Database Migrations (Creates MongoDB Collections)
 
 ```bash
-python manage.py migrate
+python backend/manage.py migrate
 ```
 
 > **Note**: Django connects to MongoDB Atlas using `django-mongodb-backend`. This automatically creates the **26 MongoDB collections** with native BSON `ObjectId` keys and query indexes.
@@ -250,7 +250,7 @@ python manage.py migrate
 ### Step 6: Populate Default Categories
 
 ```bash
-python manage.py populate_categories
+python backend/manage.py populate_categories
 ```
 
 This seeds 23 standard transaction categories (7 income, 16 expense) with predefined icons and color codes.
@@ -258,7 +258,7 @@ This seeds 23 standard transaction categories (7 income, 16 expense) with predef
 ### Step 7: Create a Superuser
 
 ```bash
-python manage.py createsuperuser
+python backend/manage.py createsuperuser
 ```
 
 *(Default demo credentials: `username: admin`, `password: admin123`)*
@@ -268,7 +268,7 @@ python manage.py createsuperuser
 Run the automated system verification script to test MongoDB models, accounts, transactions, and ML modules:
 
 ```bash
-python test_system.py
+python backend/test_system.py
 ```
 
 ### Step 9: Run Backend & Frontend Servers
@@ -276,7 +276,7 @@ python test_system.py
 #### Start Django Backend API:
 
 ```bash
-python manage.py runserver
+python backend/manage.py runserver
 ```
 
 - Admin panel: http://127.0.0.1:8000/admin/
@@ -545,46 +545,20 @@ curl -X POST http://127.0.0.1:8000/api/bills/bills/ \
 
 ```text
 smart-finance-tracker/
-├── accounts/              # User and account management
-│   ├── models.py          # User and Account models
-│   ├── serializers.py     # API serializers
-│   ├── views.py           # API viewsets
-│   ├── urls.py            # URL routing
-│   ├── admin.py           # Admin configuration
-│   └── currency_utils.py  # Currency conversion utilities
-├── transactions/          # Transaction management
-│   ├── models.py          # Category and Transaction models
-│   ├── serializers.py     # API serializers
-│   ├── views.py           # API viewsets
-│   ├── urls.py            # URL routing
-│   ├── signals.py         # Django signals
-│   └── management/        # Custom management commands
-├── budgets/               # Budget management
-│   ├── models.py          # Budget model
-│   ├── serializers.py     # API serializers
-│   ├── views.py           # API viewsets
-│   └── urls.py            # URL routing
-├── bills/                 # Bills management
-├── goals/                 # Savings goals management
-├── chatbot/               # AI chatbot agent
-│   ├── agents/            # Agent logic
-│   │   └── ai_agent.py    # Financial chatbot agent
-│   ├── llm/               # LLM integrations
-│   │   ├── gemini_client.py # Google Gemini API client
-│   │   └── ollama_client.py # Ollama local LLM client
-│   └── tools/             # Chatbot tools
-├── ml_features/           # Machine learning features
-│   ├── models.py          # ML model metadata
-│   ├── ml_utils.py        # ML utilities and algorithms
-│   └── views.py           # API viewsets
-├── finance_tracker/       # Project configuration
-│   ├── settings.py        # Django settings
-│   ├── urls.py            # URL routing
-│   └── wsgi.py            # WSGI configuration
 ├── frontend/              # Frontend application (React/Vue/Vite)
+├── backend/               # Django REST API and MongoDB integration
+│   ├── accounts/          # User and account management
+│   ├── transactions/      # Transactions and categories
+│   ├── budgets/            # Budget management
+│   ├── bills/              # Bills and reminders
+│   ├── goals/              # Savings goals
+│   ├── chatbot/            # AI chatbot agent
+│   ├── ml_features/        # Machine learning features
+│   ├── finance_tracker/   # Django project configuration
+│   ├── manage.py          # Django management script
+│   └── requirements.txt   # Python dependencies
 ├── md/                    # Documentation
-├── manage.py              # Django management script
-└── requirements.txt       # Python dependencies
+└── package-lock.json      # Root npm metadata
 ```
 
 ## Development Guide
@@ -606,7 +580,7 @@ Category.objects.create(
 
 ```bash
 # Create command structure
-python manage.py startapp mycommand
+python backend/manage.py startapp mycommand
 mkdir -p mycommand/management/commands
 touch mycommand/management/commands/mycustom.py
 ```
@@ -626,27 +600,27 @@ logger = logging.getLogger(__name__)
 #### Run All Tests
 
 ```bash
-python manage.py test
+python backend/manage.py test
 ```
 
 #### Run Specific App Tests
 
 ```bash
-python manage.py test transactions
-python manage.py test chatbot
-python manage.py test ml_features
+python backend/manage.py test transactions
+python backend/manage.py test chatbot
+python backend/manage.py test ml_features
 ```
 
 #### Test Chatbot Flow
 
 ```bash
-python test_chatbot_flow.py
+python backend/test_chatbot_flow.py
 ```
 
 #### Test System Integration
 
 ```bash
-python test_system.py
+python backend/test_system.py
 ```
 
 ### Training ML Models
@@ -654,8 +628,8 @@ python test_system.py
 The ML models train automatically as data is added. To manually retrain:
 
 ```bash
-python manage.py train_models --category=categorization
-python manage.py train_models --category=budget_prediction
+python backend/manage.py train_models --category=categorization
+python backend/manage.py train_models --category=budget_prediction
 ```
 
 Or via code:
@@ -699,22 +673,22 @@ categorizer.save_model('ml_models/categorizer.pkl')
 **Issue**: Gemini API not working
 
 - **Solution**: Check API key in environment variables
-- **Debug**: Run `python manage.py shell` and test connection
+- **Debug**: Run `python backend/manage.py shell` and test connection
 
 **Issue**: Chatbot not responding
 
-- **Solution**: Check if LLM is available (`python test_chatbot_flow.py`)
+- **Solution**: Check if LLM is available (`python backend/test_chatbot_flow.py`)
 - **Fallback**: System will automatically use intelligent fallback
 
 **Issue**: ML model not categorizing correctly
 
 - **Solution**: Train with more examples
-- **Command**: `python manage.py train_models --category=categorization`
+- **Command**: `python backend/manage.py train_models --category=categorization`
 
 **Issue**: Database errors
 
 - **Solution**: Run migrations
-- **Command**: `python manage.py makemigrations && python manage.py migrate`
+- **Command**: `python backend/manage.py makemigrations && python backend/manage.py migrate`
 
 ## Production Deployment
 

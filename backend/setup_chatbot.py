@@ -55,7 +55,7 @@ def setup_chatbot():
     print("=" * 60)
     print("\nNext steps:")
     print("1. Add ChatbotButton to your React App.jsx")
-    print("2. Run: python manage.py runserver")
+    print("2. Run: cd backend && python manage.py runserver")
     print("3. Run: npm run dev (in frontend directory)")
     print("4. Click the 💬 button in the bottom-right corner")
     print("\nExample queries to try:")

@@ -375,7 +375,7 @@ The following migrations have been applied:
 
 Run migrations with:
 ```bash
-python manage.py migrate
+python backend/manage.py migrate
 ```
 
 ---
@@ -386,7 +386,7 @@ All new features include comprehensive unit tests:
 
 ```bash
 # Run tests for bills and goals
-python manage.py test bills goals --verbosity=2
+python backend/manage.py test bills goals --verbosity=2
 
 # Test results: 5 tests passed ✓
 ```

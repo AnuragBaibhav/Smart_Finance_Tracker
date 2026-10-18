@@ -29,7 +29,7 @@ def predict_category(request):
         return Response(
             {
                 "error": "Categorizer model has not been trained yet. "
-                "Run `python manage.py train_models --model categorizer` first."
+                "Run `python backend/manage.py train_models --model categorizer` first."
             },
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
@@ -82,7 +82,7 @@ def predict_budget(request):
         return Response(
             {
                 "error": "Budget predictor model has not been trained yet. "
-                "Run `python manage.py train_models --model budget` first."
+                "Run `python backend/manage.py train_models --model budget` first."
             },
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )

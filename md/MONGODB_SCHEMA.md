@@ -123,16 +123,16 @@ Execute the following commands to initialize the database and collections:
 
 ```bash
 # 1. Apply all migrations and construct MongoDB collections + indexes
-python manage.py migrate
+python backend/manage.py migrate
 
 # 2. Seed default categories (23 system categories for income & expenses)
-python manage.py populate_categories
+python backend/manage.py populate_categories
 
 # 3. Create administrator credentials
-python manage.py createsuperuser
+python backend/manage.py createsuperuser
 
 # 4. Verify system and database connectivity
-python test_system.py
+python backend/test_system.py
 ```
 
 ---

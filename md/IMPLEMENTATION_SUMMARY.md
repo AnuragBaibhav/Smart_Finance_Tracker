@@ -57,7 +57,7 @@
   - Automatic prediction on raw transaction descriptions with confidence scoring (>60% threshold)
 - ✅ **Budget Predictor**: Random Forest regression trained on historical 90-day spending patterns
 - ✅ Model metadata persistence (`ml_models`) and inference logging (`prediction_logs`)
-- ✅ Management command to train models: `python manage.py train_models`
+- ✅ Management command to train models: `python backend/manage.py train_models`
 
 ### 9. REST API & Frontend Integration
 - ✅ Complete RESTful API powered by Django REST Framework (DRF)
@@ -83,22 +83,22 @@
 ### 1. Database & Migrations
 ```bash
 # Apply migrations to MongoDB
-python manage.py migrate
+python backend/manage.py migrate
 
 # Seed default income and expense categories
-python manage.py populate_categories
+python backend/manage.py populate_categories
 
 # Create admin user
-python manage.py createsuperuser
+python backend/manage.py createsuperuser
 ```
 
 ### 2. Testing & Verification
 ```bash
 # Verify complete system and MongoDB connectivity
-python test_system.py
+python backend/test_system.py
 
 # Test chatbot end-to-end flow
-python test_chatbot_flow.py
+python backend/test_chatbot_flow.py
 
 # Run API examples
 python api_examples.py
@@ -107,7 +107,7 @@ python api_examples.py
 ### 3. Server Execution
 ```bash
 # Start Django backend API
-python manage.py runserver
+python backend/manage.py runserver
 
 # Start React Frontend
 cd frontend
