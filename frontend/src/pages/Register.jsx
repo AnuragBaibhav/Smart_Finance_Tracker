@@ -18,8 +18,22 @@ export default function Register() {
     setErrors({});
     setGeneralError('');
 
-    if (form.password !== form.password2) {
-      setErrors({ password2: 'Passwords do not match' });
+    const username = form.username.trim();
+    const email = form.email.trim();
+    const validationErrors = {};
+    if (!username) validationErrors.username = 'Username is required.';
+    else if (!/^[A-Za-z0-9_]{3,30}$/.test(username)) {
+      validationErrors.username = 'Use 3-30 letters, numbers, or underscores.';
+    }
+    if (!email) validationErrors.email = 'Email is required.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) validationErrors.email = 'Enter a valid email address.';
+    if (form.password.length < 8) validationErrors.password = 'Password must be at least 8 characters.';
+    else if (!/[A-Za-z]/.test(form.password) || !/\d/.test(form.password)) {
+      validationErrors.password = 'Password must include a letter and a number.';
+    }
+    if (form.password !== form.password2) validationErrors.password2 = 'Passwords do not match.';
+    if (Object.keys(validationErrors).length) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -29,8 +43,8 @@ export default function Register() {
       await API.get('/api-auth/login/');
 
       await registerApi({
-        username: form.username,
-        email: form.email,
+        username,
+        email,
         password: form.password,
         password2: form.password2,
       });
@@ -78,22 +92,22 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Username</label>
-            <input type="text" placeholder="Choose a username" value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} required />
+            <input type="text" placeholder="Choose a username" value={form.username} onChange={(e) => { setForm({ ...form, username: e.target.value }); setErrors({}); }} required />
             {fieldError('username')}
           </div>
           <div className="form-group">
             <label>Email</label>
-            <input type="email" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+            <input type="email" placeholder="you@example.com" value={form.email} onChange={(e) => { setForm({ ...form, email: e.target.value }); setErrors({}); }} required />
             {fieldError('email')}
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input type="password" placeholder="Create a password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+            <input type="password" placeholder="Create a password" value={form.password} onChange={(e) => { setForm({ ...form, password: e.target.value }); setErrors({}); }} required />
             {fieldError('password')}
           </div>
           <div className="form-group">
             <label>Confirm Password</label>
-            <input type="password" placeholder="Confirm your password" value={form.password2} onChange={(e) => setForm({ ...form, password2: e.target.value })} required />
+            <input type="password" placeholder="Confirm your password" value={form.password2} onChange={(e) => { setForm({ ...form, password2: e.target.value }); setErrors({}); }} required />
             {fieldError('password2')}
           </div>
           <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: 8 }}>

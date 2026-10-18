@@ -3,13 +3,22 @@ from .models import ChatSession, ChatMessage, ChatAction, ChatInsight
 
 
 class ChatMessageSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    session = serializers.SerializerMethodField()
+
     class Meta:
         model = ChatMessage
         fields = ["id", "session", "role", "content", "created_at"]
         read_only_fields = ["id", "created_at"]
 
+    def get_session(self, obj):
+        return str(obj.session_id)
+
 
 class ChatActionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    session = serializers.SerializerMethodField()
+
     class Meta:
         model = ChatAction
         fields = [
@@ -25,8 +34,14 @@ class ChatActionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "created_at", "completed_at", "result"]
 
+    def get_session(self, obj):
+        return str(obj.session_id)
+
 
 class ChatInsightSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    user = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = ChatInsight
         fields = [
@@ -42,6 +57,8 @@ class ChatInsightSerializer(serializers.ModelSerializer):
 
 
 class ChatSessionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    user = serializers.ReadOnlyField(source="user.username")
     messages = ChatMessageSerializer(many=True, read_only=True)
     message_count = serializers.SerializerMethodField()
 

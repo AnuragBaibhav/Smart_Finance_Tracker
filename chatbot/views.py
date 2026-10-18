@@ -68,9 +68,9 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
                 return Response(
                     {
                         "success": True,
-                        "message_id": assistant_msg.id,
+                        "message_id": str(assistant_msg.id),
                         "response": response_text,
-                        "user_message_id": user_msg_obj.id,
+                        "user_message_id": str(user_msg_obj.id),
                         "timestamp": assistant_msg.created_at.isoformat(),
                     }
                 )

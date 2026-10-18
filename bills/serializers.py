@@ -1,8 +1,12 @@
 from rest_framework import serializers
 from .models import Bill, BillPayment, BillNotification
+from accounts.models import Account
+from transactions.models import Category
 
 
 class BillPaymentSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = BillPayment
         fields = [
@@ -17,6 +21,19 @@ class BillPaymentSerializer(serializers.ModelSerializer):
 
 
 class BillSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(),
+        pk_field=serializers.CharField(),
+        allow_null=True,
+        required=False,
+    )
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        pk_field=serializers.CharField(),
+        allow_null=True,
+        required=False,
+    )
     payments = BillPaymentSerializer(many=True, read_only=True)
     days_until_due = serializers.SerializerMethodField()
     is_overdue = serializers.SerializerMethodField()
@@ -63,6 +80,7 @@ class BillSerializer(serializers.ModelSerializer):
 
 
 class BillNotificationSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
     bill_name = serializers.CharField(source="bill.name", read_only=True)
     bill_amount = serializers.DecimalField(
         source="bill.amount", read_only=True, max_digits=12, decimal_places=2

@@ -200,7 +200,10 @@ AUTH_USER_MODEL = "accounts.User"
 
 # Login/Logout URLs
 LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/dashboard/"
+# The SPA completes authentication by fetching the current-user API after the
+# session login. Returning an API response avoids redirecting axios to a
+# server-rendered route that does not exist.
+LOGIN_REDIRECT_URL = "/api/accounts/users/me/"
 LOGOUT_REDIRECT_URL = "/"
 # Gemini LLM Configuration
 # Get your API key from: https://ai.google.dev/

@@ -45,7 +45,7 @@ export default function Budgets() {
       await createBudget({
         ...form,
         amount: parseFloat(form.amount),
-        category: parseInt(form.category),
+        category: form.category,
         alert_threshold: parseInt(form.alert_threshold),
       });
       addToast('Budget created successfully!');

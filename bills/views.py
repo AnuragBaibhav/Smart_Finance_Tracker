@@ -93,7 +93,7 @@ class BillViewSet(viewsets.ModelViewSet):
             {
                 "message": "Bill marked as paid",
                 "payment": BillPaymentSerializer(payment).data,
-                "transaction_id": transaction.id if transaction else None,
+                "transaction_id": str(transaction.id) if transaction else None,
             },
             status=status.HTTP_200_OK,
         )

@@ -6,6 +6,7 @@ import API from '../api/axios';
 
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,7 +14,14 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const username = form.username.trim();
+    const validationErrors = {};
+    if (!username) validationErrors.username = 'Username is required.';
+    else if (username.length < 3) validationErrors.username = 'Username must be at least 3 characters.';
+    if (!form.password) validationErrors.password = 'Password is required.';
+    setErrors(validationErrors);
     setError('');
+    if (Object.keys(validationErrors).length) return;
     setLoading(true);
 
     try {
@@ -22,7 +30,7 @@ export default function Login() {
       
       // Submit login form
       const formData = new URLSearchParams();
-      formData.append('username', form.username);
+      formData.append('username', username);
       formData.append('password', form.password);
 
       await API.post('/api-auth/login/', formData, {
@@ -64,9 +72,10 @@ export default function Login() {
               type="text"
               placeholder="Enter your username"
               value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              onChange={(e) => { setForm({ ...form, username: e.target.value }); setErrors({}); }}
               required
             />
+            {errors.username && <div className="error">{errors.username}</div>}
           </div>
           <div className="form-group">
             <label>Password</label>
@@ -74,9 +83,10 @@ export default function Login() {
               type="password"
               placeholder="Enter your password"
               value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={(e) => { setForm({ ...form, password: e.target.value }); setErrors({}); }}
               required
             />
+            {errors.password && <div className="error">{errors.password}</div>}
           </div>
           <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: 8 }}>
             {loading ? 'Signing in...' : 'Sign In'}

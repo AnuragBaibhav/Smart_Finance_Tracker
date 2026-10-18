@@ -1150,7 +1150,15 @@ tbody tr:hover { background: var(--gray-50); }
 /* ── Grids ── */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .budget-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.category-card { min-width: 0; overflow: hidden; }
+.category-card-body { min-width: 0; padding: 16px; display: flex; align-items: center; gap: 14px; }
+.category-icon { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; letter-spacing: .02em; line-height: 1; overflow: hidden; }
+.category-content { flex: 1 1 auto; min-width: 0; }
+.category-name { font-weight: 600; font-size: 15px; overflow-wrap: anywhere; }
+.category-badges { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+.category-description { font-size: 12px; color: var(--gray-500); margin-top: 4px; overflow-wrap: anywhere; }
+.category-card .table-actions { flex: 0 0 auto; }
 
 /* ── Button icon inline ── */
 .btn-icon { background: none; border: none; cursor: pointer; padding: 4px; color: var(--gray-500); border-radius: 4px; }

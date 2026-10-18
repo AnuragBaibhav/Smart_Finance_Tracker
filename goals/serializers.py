@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from decimal import Decimal
 from .models import SavingsGoal, GoalContribution, GoalMilestone
+from accounts.models import Account
 
 
 class GoalContributionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = GoalContribution
         fields = ["id", "amount", "contribution_date", "source", "notes", "created_at"]
@@ -11,6 +14,8 @@ class GoalContributionSerializer(serializers.ModelSerializer):
 
 
 class GoalMilestoneSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = GoalMilestone
         fields = [
@@ -25,6 +30,13 @@ class GoalMilestoneSerializer(serializers.ModelSerializer):
 
 
 class SavingsGoalSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(),
+        pk_field=serializers.CharField(),
+        allow_null=True,
+        required=False,
+    )
     contributions = GoalContributionSerializer(many=True, read_only=True)
     milestones = GoalMilestoneSerializer(many=True, read_only=True)
     progress_percentage = serializers.SerializerMethodField()

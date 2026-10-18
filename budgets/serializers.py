@@ -1,8 +1,13 @@
 from rest_framework import serializers
 from .models import Budget
+from transactions.models import Category
 
 
 class BudgetSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), pk_field=serializers.CharField()
+    )
     user = serializers.ReadOnlyField(source='user.username')
     category_name = serializers.ReadOnlyField(source='category.name')
     spent_amount = serializers.SerializerMethodField()

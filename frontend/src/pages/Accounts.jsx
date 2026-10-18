@@ -147,8 +147,9 @@ export default function Accounts() {
         )}
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title={editing ? 'Edit Account' : 'New Account'}>
-        <form onSubmit={handleSubmit} className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} title={editing ? 'Edit Account' : 'New Account'}>
+          <form onSubmit={handleSubmit} className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div>
             <label>Account Name</label>
             <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="e.g. Chase Checking" />
@@ -193,8 +194,9 @@ export default function Accounts() {
             <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
             <button type="submit" className="btn btn-primary">{editing ? 'Save Changes' : 'Create Account'}</button>
           </div>
-        </form>
-      </Modal>
+          </form>
+        </Modal>
+      )}
     </div>
   );
 }

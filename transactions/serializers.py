@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Category, Transaction
+from accounts.models import Account
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = Category
         fields = [
@@ -19,6 +22,16 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(), pk_field=serializers.CharField()
+    )
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        pk_field=serializers.CharField(),
+        allow_null=True,
+        required=False,
+    )
     user = serializers.ReadOnlyField(source="user.username")
     category_name = serializers.ReadOnlyField(source="category.name")
     account_name = serializers.ReadOnlyField(source="account.name")
@@ -57,6 +70,15 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class TransactionCreateSerializer(serializers.ModelSerializer):
+    account = serializers.PrimaryKeyRelatedField(
+        queryset=Account.objects.all(), pk_field=serializers.CharField()
+    )
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        pk_field=serializers.CharField(),
+        allow_null=True,
+        required=False,
+    )
     # The currency the user enters the amount in (may differ from preferred)
     input_currency = serializers.CharField(
         max_length=3, required=False, write_only=True

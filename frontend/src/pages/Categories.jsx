@@ -75,6 +75,11 @@ export default function Categories() {
   const filtered = filter === 'all' ? categories : categories.filter(c => c.category_type === filter);
   const expenseCount = categories.filter(c => c.category_type === 'expense').length;
   const incomeCount = categories.filter(c => c.category_type === 'income').length;
+  const getCategoryInitials = (name) => {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length > 1) return words.slice(0, 2).map(word => word[0]).join('').toUpperCase();
+    return (words[0]?.slice(0, 2) || '?').toUpperCase();
+  };
 
   return (
     <div>
@@ -112,17 +117,14 @@ export default function Categories() {
       ) : (
         <div className="category-grid">
           {filtered.map((cat) => (
-            <div className="card" key={cat.id} style={{ borderLeft: `4px solid ${cat.color || '#6366f1'}` }}>
-              <div className="card-body" style={{ padding: 16, display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, background: `${cat.color || '#6366f1'}15`,
-                }}>
-                  {cat.icon || '🏷️'}
+            <div className="card category-card" key={cat.id} style={{ borderLeft: `4px solid ${cat.color || '#6366f1'}` }}>
+              <div className="card-body category-card-body">
+                <div className="category-icon" style={{ background: `${cat.color || '#6366f1'}15` }}>
+                  {getCategoryInitials(cat.name)}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: 15 }}>{cat.name}</div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
+                <div className="category-content">
+                  <div className="category-name">{cat.name}</div>
+                  <div className="category-badges">
                     <span className={`badge-tag ${cat.category_type === 'income' ? 'badge-income' : 'badge-expense'}`} style={{ fontSize: 11 }}>
                       {cat.category_type}
                     </span>
@@ -130,7 +132,7 @@ export default function Categories() {
                       <span className="badge-tag" style={{ fontSize: 11, background: 'var(--gray-100)', color: 'var(--gray-500)' }}>System</span>
                     )}
                   </div>
-                  {cat.description && <div style={{ fontSize: 12, color: 'var(--gray-500)', marginTop: 4 }}>{cat.description}</div>}
+                  {cat.description && <div className="category-description">{cat.description}</div>}
                 </div>
                 {!cat.is_system && (
                   <div className="table-actions">

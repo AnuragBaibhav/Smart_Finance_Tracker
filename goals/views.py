@@ -86,7 +86,7 @@ class SavingsGoalViewSet(viewsets.ModelViewSet):
                 "message": "Contribution added",
                 "contribution": GoalContributionSerializer(contribution).data,
                 "goal": SavingsGoalSerializer(goal).data,
-                "transaction_id": transaction.id if transaction else None,
+                "transaction_id": str(transaction.id) if transaction else None,
             },
             status=status.HTTP_201_CREATED,
         )

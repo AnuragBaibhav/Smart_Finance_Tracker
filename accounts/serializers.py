@@ -3,6 +3,8 @@ from .models import User, Account
 
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -48,6 +50,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
     user = serializers.ReadOnlyField(source="user.username")
 
     class Meta:

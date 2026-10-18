@@ -51,7 +51,6 @@ export default function Bills() {
       const payload = {
         ...form,
         amount: parseFloat(form.amount),
-        due_date: parseInt(form.due_date),
         notify_days_before: parseInt(form.notify_days_before),
         next_due_date: today,
         status: 'pending',

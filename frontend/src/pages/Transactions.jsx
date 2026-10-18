@@ -114,8 +114,8 @@ export default function Transactions() {
       const payload = {
         ...form,
         amount: parseFloat(form.amount),
-        account: parseInt(form.account) || undefined,
-        category: form.category ? parseInt(form.category) : undefined,
+        account: form.account || undefined,
+        category: form.category || undefined,
       };
       // Only send input_currency if different from preferred
       if (form.input_currency === preferredCurrency) {

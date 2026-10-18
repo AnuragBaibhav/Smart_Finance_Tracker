@@ -171,7 +171,7 @@ class ChatbotTools:
                 "goal_name": goal.name,
                 "new_total": float(goal.current_amount),
                 "progress": round(total_progress, 1),
-                "transaction_id": transaction.id if transaction else None,
+                "transaction_id": str(transaction.id) if transaction else None,
             }
         except Exception as e:
             logger.error(f"Error in add_goal_contribution: {e}")
@@ -194,7 +194,7 @@ class ChatbotTools:
 
                 goals_list.append(
                     {
-                        "id": goal.id,
+                        "id": str(goal.id),
                         "name": goal.name,
                         "target_amount": float(goal.target_amount),
                         "current_amount": float(goal.current_amount),
@@ -267,7 +267,7 @@ class ChatbotTools:
             return {
                 "success": True, 
                 "message": f"✅ Successfully added {transaction_type} of {self._curr_sym()}{amount} to '{account.name}' under category '{category_name}'.",
-                "transaction_id": t.id
+                "transaction_id": str(t.id)
             }
         except Exception as e:
             logger.error(f"Error in add_transaction: {e}")
@@ -285,7 +285,7 @@ class ChatbotTools:
             for t in transactions:
                 trans_list.append(
                     {
-                        "id": t.id,
+                        "id": str(t.id),
                         "date": t.date.isoformat(),
                         "amount": float(t.amount),
                         "type": t.transaction_type,
@@ -369,7 +369,7 @@ class ChatbotTools:
             for account in accounts:
                 accounts_list.append(
                     {
-                        "id": account.id,
+                        "id": str(account.id),
                         "name": account.name,
                         "type": account.account_type,
                         "balance": float(account.balance),
@@ -466,7 +466,7 @@ class ChatbotTools:
                 if b.next_due_date <= end_date or b.status == "overdue":
                     bills_list.append(
                         {
-                            "id": b.id,
+                            "id": str(b.id),
                             "name": b.name,
                             "amount": float(b.amount),
                             "frequency": b.frequency,
@@ -542,7 +542,7 @@ class ChatbotTools:
                 "message": f"\u2705 Successfully paid {self._curr_sym()}{pay_amount} for '{bill.name}'. A transaction has been recorded.",
                 "bill_name": bill.name,
                 "amount_paid": float(pay_amount),
-                "transaction_id": transaction.id if transaction else None,
+                "transaction_id": str(transaction.id) if transaction else None,
                 "next_due_date": bill.next_due_date.isoformat() if bill.frequency != "once" else None
             }
         except Bill.DoesNotExist:
