@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getTransactions, getTransactionsByCategory, getTransactionSummary, getAccounts, getCategories } from '../api/endpoints';
 import { BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { useCurrency } from '../context/CurrencyContext';
+import { useCurrency } from '../context/useCurrency';
 
 const COLORS = ['#6366f1', '#f43f5e', '#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#64748b'];
 

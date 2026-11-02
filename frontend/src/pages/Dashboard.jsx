@@ -3,8 +3,8 @@ import { getActiveBudgets, getBudgetAlerts, getTransactions, getAccounts, getBil
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Sparkles, AlertTriangle, ArrowRight, Coffee, Car, Home, ShoppingBag, Film, Utensils, Zap, CreditCard, Smartphone, Plane, Heart, BookOpen, Repeat, ChevronDown, Receipt, Target, Clock, CheckCircle, PiggyBank, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useAuth } from '../context/useAuth';
+import { useCurrency } from '../context/useCurrency';
 
 const categoryIcons = {
   'food': Utensils, 'drink': Utensils, 'dining': Utensils, 'groceries': Utensils,

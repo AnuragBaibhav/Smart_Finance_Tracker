@@ -10,18 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
+import sys
+import warnings
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Suppress noisy library and deprecation warnings in terminal
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-import os
-from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv(BASE_DIR / ".env")
@@ -34,12 +34,13 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "finance_tracker.apps.FinanceTrackerConfig",
     "finance_tracker.mongo_apps.MongoAdminConfig",
     "finance_tracker.mongo_apps.MongoAuthConfig",
     "finance_tracker.mongo_apps.MongoContentTypesConfig",
@@ -54,7 +55,7 @@ INSTALLED_APPS = [
     "ml_features",
     "bills",
     "goals",
-    # Chatbot & Agent (can be removed to disable chatbot feature)
+    # Chatbot & Agent
     "chatbot",
 ]
 
@@ -97,31 +98,38 @@ WSGI_APPLICATION = "finance_tracker.wsgi.application"
 
 
 # Database
-# Using MongoDB Atlas via django-mongodb-backend
+# Using MongoDB via django-mongodb-backend (supports local MongoDB and MongoDB Atlas)
+
+def _configure_mongodb():
+    raw_uri = os.environ.get("MONGODB_URI", "mongodb://localhost:27017")
+    db_name = os.environ.get("MONGODB_NAME", "smart_finance_tracker")
+    options = {
+        "serverSelectionTimeoutMS": int(
+            os.environ.get("MONGODB_SERVER_SELECTION_TIMEOUT_MS", "30000")
+        ),
+        "connectTimeoutMS": int(
+            os.environ.get("MONGODB_CONNECT_TIMEOUT_MS", "30000")
+        ),
+    }
+
+    # For Atlas (SRV) connections, use certifi CA bundle for proper TLS
+    if "mongodb+srv://" in raw_uri or ".mongodb.net" in raw_uri:
+        try:
+            import certifi
+            options["tlsCAFile"] = certifi.where()
+        except ImportError:
+            pass
+
+    return {
+        "ENGINE": "django_mongodb_backend",
+        "NAME": db_name,
+        "HOST": raw_uri,
+        "OPTIONS": options,
+    }
+
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django_mongodb_backend",
-        "NAME": os.environ.get("MONGODB_NAME", "smart_finance_tracker"),
-        "HOST": os.environ.get("MONGODB_URI", "mongodb://localhost:27017"),
-        "OPTIONS": {
-            "serverSelectionTimeoutMS": int(
-                os.environ.get("MONGODB_SERVER_SELECTION_TIMEOUT_MS", "15000")
-            ),
-            "connectTimeoutMS": int(
-                os.environ.get("MONGODB_CONNECT_TIMEOUT_MS", "15000")
-            ),
-        },
-        "CLIENT": {
-            "host": os.environ.get("MONGODB_URI", "mongodb://localhost:27017"),
-            "serverSelectionTimeoutMS": int(
-                os.environ.get("MONGODB_SERVER_SELECTION_TIMEOUT_MS", "15000")
-            ),
-            "connectTimeoutMS": int(
-                os.environ.get("MONGODB_CONNECT_TIMEOUT_MS", "15000")
-            ),
-        },
-    }
+    "default": _configure_mongodb(),
 }
 
 
@@ -184,7 +192,9 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -192,7 +202,9 @@ CORS_ALLOW_CREDENTIALS = True
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
 ]
 
 # Custom User Model
@@ -200,13 +212,10 @@ AUTH_USER_MODEL = "accounts.User"
 
 # Login/Logout URLs
 LOGIN_URL = "/accounts/login/"
-# The SPA completes authentication by fetching the current-user API after the
-# session login. Returning an API response avoids redirecting axios to a
-# server-rendered route that does not exist.
 LOGIN_REDIRECT_URL = "/api/accounts/users/me/"
 LOGOUT_REDIRECT_URL = "/"
+
 # Gemini LLM Configuration
-# Get your API key from: https://ai.google.dev/
 GEMINI_CONFIG = {
     "api_key": os.environ.get("GEMINI_API_KEY", ""),
     "model": os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
@@ -220,4 +229,53 @@ OLLAMA_CONFIG = {
     "model": os.environ.get("OLLAMA_MODEL", "mistral"),
     "timeout": int(os.environ.get("OLLAMA_TIMEOUT", "120")),
     "enabled": os.environ.get("OLLAMA_ENABLED", "True").lower() == "true",
+}
+
+# Logging configuration: clean, important messages only
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "[%(levelname)s] %(name)s: %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "pymongo": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "google": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "urllib3": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
 }

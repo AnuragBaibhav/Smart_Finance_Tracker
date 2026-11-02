@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { getBudgets, getActiveBudgets, getBudgetAlerts, getCategories, createBudget, deleteBudget } from '../api/endpoints';
 import { Plus, AlertTriangle, Trash2, TrendingUp } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useCurrency } from '../context/useCurrency';
 
 export default function Budgets() {
   const [budgets, setBudgets] = useState([]);

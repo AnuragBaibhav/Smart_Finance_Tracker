@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { Wallet } from 'lucide-react';
 import { register as registerApi } from '../api/endpoints';
 import API from '../api/axios';
@@ -57,6 +57,10 @@ export default function Register() {
       if (data && typeof data === 'object' && !data.detail) {
         // Field-level errors
         setErrors(data);
+      } else if (!err.response) {
+        setGeneralError(
+          'The API is unavailable. Start the Django server on port 8000 and verify the MongoDB connection.'
+        );
       } else {
         setGeneralError(data?.detail || 'Registration failed. Please try again.');
       }

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { getBills, getUpcomingBills, getOverdueBills, getBillsSummary, createBill, deleteBill, markBillPaid, cancelBill, getAccounts, getExpenseCategories } from '../api/endpoints';
 import { Plus, AlertTriangle, CheckCircle, Trash2, Clock, Receipt, CalendarClock, CreditCard, XCircle } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useCurrency } from '../context/useCurrency';
 
 export default function Bills() {
   const [bills, setBills] = useState([]);

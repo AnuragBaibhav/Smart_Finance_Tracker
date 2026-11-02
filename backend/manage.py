@@ -2,6 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import warnings
+
+# Suppress noisy library and deprecation warnings in terminal
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
 from dotenv import load_dotenv
 
 def main():

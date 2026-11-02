@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ArrowLeftRight, PiggyBank, BarChart3, User, Settings, Wallet, Tags, LogOut, Receipt, Target, Landmark } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 
 const navItems = [
   { path: '/', label: 'Overview', icon: LayoutDashboard },

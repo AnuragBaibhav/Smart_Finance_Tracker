@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { getTransactions, getCategories, getAccounts, createTransaction, deleteTransaction, getCurrencies, getExchangeRate, exportTransactionsPdf } from '../api/endpoints';
 import { Plus, Trash2, ArrowRightLeft, Download } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useAuth } from '../context/AuthContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useAuth } from '../context/useAuth';
+import { useCurrency } from '../context/useCurrency';
 import { formatCurrency } from '../utils/currency';
 
 export default function Transactions() {

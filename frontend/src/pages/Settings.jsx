@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { getAccounts, createAccount, updateAccount, deleteAccount, getCurrencies, updateProfile, getMe } from '../api/endpoints';
 import { Plus, Pencil, Trash2, Wallet, AlertTriangle, Check, RefreshCw } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useAuth } from '../context/AuthContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useAuth } from '../context/useAuth';
+import { useCurrency } from '../context/useCurrency';
 
 const ACCOUNT_TYPES = [
   { value: 'savings', label: 'Savings Account' },

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { getAccounts, createAccount, updateAccount, deleteAccount } from '../api/endpoints';
 import { Plus, Pencil, Trash2, Landmark, CreditCard, Wallet, Banknote } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useCurrency } from '../context/useCurrency';
 import { formatCurrency } from '../utils/currency';
 
 export default function Accounts() {

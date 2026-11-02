@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import { getAllExchangeRates } from '../api/endpoints';
-import { useAuth } from './AuthContext';
+import { useAuth } from './useAuth';
 import { formatCurrency, CURRENCY_SYMBOLS } from '../utils/currency';
 
-const CurrencyContext = createContext(null);
+export const CurrencyContext = createContext(null);
 
 // All existing data is stored in INR
 const BASE_CURRENCY = 'INR';
@@ -67,5 +67,3 @@ export function CurrencyProvider({ children }) {
     </CurrencyContext.Provider>
   );
 }
-
-export const useCurrency = () => useContext(CurrencyContext);

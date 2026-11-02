@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Bell, LogOut, ChevronDown, Check, CheckCheck, AlertTriangle, CreditCard, Clock } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { getUnreadNotifications, getBillNotifications, markNotificationRead, markAllNotificationsRead } from '../api/endpoints';
 
 export default function Topbar() {

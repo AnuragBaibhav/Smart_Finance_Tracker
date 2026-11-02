@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { getGoals, getGoalsSummary, createGoal, deleteGoal, addGoalContribution, completeGoal, getAccounts } from '../api/endpoints';
 import { Plus, Target, TrendingUp, CheckCircle, Trash2, Calendar, Sparkles, PiggyBank, Flag } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
-import { useCurrency } from '../context/CurrencyContext';
+import { useToast } from '../context/useToast';
+import { useCurrency } from '../context/useCurrency';
 
 const categoryLabels = {
   emergency: 'Emergency Fund', vacation: 'Vacation', car: 'Car', home: 'Home',

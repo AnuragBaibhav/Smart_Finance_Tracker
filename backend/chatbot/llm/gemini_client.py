@@ -1,15 +1,20 @@
 """Gemini API client for LLM integration"""
 
+import logging
+import warnings
+from typing import Optional
+
+# Suppress deprecation and support warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
 try:
     import google.generativeai as genai
-
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
     genai = None
 
-import logging
-from typing import Optional
 from django.conf import settings
 
 logger = logging.getLogger(__name__)

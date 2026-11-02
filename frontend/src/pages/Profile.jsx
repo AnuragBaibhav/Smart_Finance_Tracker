@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/useAuth';
+import { useToast } from '../context/useToast';
 import { updateProfile } from '../api/endpoints';
 import { Mail, Phone, User, Calendar, Pencil, X, Check } from 'lucide-react';
 

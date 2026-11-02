@@ -3,7 +3,7 @@ import { getCategories } from '../api/endpoints';
 import API from '../api/axios';
 import { Plus, Pencil, Trash2, Tag } from 'lucide-react';
 import Modal from '../components/Modal';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '../context/useToast';
 
 const PRESET_COLORS = ['#6366f1', '#f43f5e', '#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#64748b', '#ef4444', '#22c55e'];
 const PRESET_ICONS = ['🍔', '🚗', '🏠', '💊', '🎮', '📚', '✈️', '🛒', '💰', '📱', '🎬', '💳', '👕', '🎁', '⚡', '🏥'];
